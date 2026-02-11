@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐳 Docker 101 - ¡Aprende Docker!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            margin: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .subtitle {
+            color: #34495e;
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+
+        .animals-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .animal {
+            font-size: 120px;
+            animation: jump 1.5s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .animal:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .puppy {
+            animation-delay: 0s;
+        }
+
+        .duck {
+            animation-delay: 0.75s;
+        }
+
+        @keyframes jump {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-30px) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(0) rotate(0deg);
+            }
+            75% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        .docker-logo {
+            font-size: 80px;
+            margin: 20px 0;
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .info-box {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #3498db;
+        }
+
+        .info-box h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #34495e;
+            line-height: 1.6;
+        }
+
+        .command {
+            background: #2c3e50;
+            color: #2ecc71;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            text-align: left;
+            overflow-x: auto;
+        }
+
+        .success-badge {
+            display: inline-block;
+            background: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            font-weight: bold;
+            animation: wiggle 1s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-3deg);
+            }
+            75% {
+                transform: rotate(3deg);
+            }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .stars {
+            font-size: 30px;
+            margin: 20px 0;
+        }
+
+        .star {
+            display: inline-block;
+            animation: twinkle 1s ease-in-out infinite;
+        }
+
+        .star:nth-child(1) { animation-delay: 0s; }
+        .star:nth-child(2) { animation-delay: 0.2s; }
+        .star:nth-child(3) { animation-delay: 0.4s; }
+        .star:nth-child(4) { animation-delay: 0.6s; }
+        .star:nth-child(5) { animation-delay: 0.8s; }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .celebration {
+            position: fixed;
+            pointer-events: none;
+            font-size: 30px;
+            animation: celebrate 3s ease-out forwards;
+        }
+
+        @keyframes celebrate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-500px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐳 ¡Bienvenido a Docker 101!</h1>
+        <p class="subtitle">Aprende Docker de forma divertida y práctica</p>
+        
+        <div class="docker-logo floating">🐳</div>
+        
+        <div class="animals-container">
+            <div class="animal puppy" onclick="celebrate('🐶')" title="¡Cachorro feliz!">🐶</div>
+            <div class="animal duck" onclick="celebrate('🦆')" title="¡Pato feliz!">🦆</div>
+        </div>
+
+        <div class="stars">
+            <span class="star">⭐</span>
+            <span class="star">⭐</span>
+            <span class="star">⭐</span>
+            <span class="star">⭐</span>
+            <span class="star">⭐</span>
+        </div>
+
+        <div class="message">
+            ¡Tu contenedor Docker está funcionando correctamente! 🎉
+        </div>
+
+        <div class="success-badge">
+            ✅ ¡Éxito! Tu primer contenedor está corriendo
+        </div>
+
+        <div class="info-box">
+            <h3>🎯 ¿Qué acabas de hacer?</h3>
+            <p>
+                Has creado y ejecutado tu primer contenedor Docker con un sitio web.
+                Este sitio está corriendo dentro de un contenedor aislado usando Nginx.
+            </p>
+        </div>
+
+        <div class="command">
+            <div>$ docker ps</div>
+            <div style="color: #95a5a6; margin-top: 5px;">
+                # Ver este contenedor en ejecución
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>🚀 Próximos pasos</h3>
+            <p>
+                1. Explora los comandos de Docker en el README<br>
+                2. Modifica este archivo HTML<br>
+                3. Reconstruye la imagen<br>
+                4. Ejecuta el nuevo contenedor
+            </p>
+        </div>
+
+        <button class="btn" onclick="showCommands()">📚 Ver Comandos Útiles</button>
+        <button class="btn" onclick="celebrate('🎊')">🎉 ¡Celebrar!</button>
+
+        <div id="commands" style="display: none; margin-top: 20px;">
+            <div class="command">
+                # Detener este contenedor<br>
+                $ docker stop mi-web<br><br>
+                # Entrar al contenedor<br>
+                $ docker exec -it mi-web sh<br><br>
+                # Ver logs<br>
+                $ docker logs mi-web
+            </div>
+        </div>
+
+        <footer>
+            <p>💡 Hecho con ❤️ para aprender Docker</p>
+            <p>🐶 Cachorro + 🦆 Pato = 🐳 Docker Feliz</p>
+        </footer>
+    </div>
+
+    <script>
+        function celebrate(emoji) {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const celebration = document.createElement('div');
+                    celebration.className = 'celebration';
+                    celebration.textContent = emoji;
+                    celebration.style.left = Math.random() * window.innerWidth + 'px';
+                    celebration.style.top = window.innerHeight + 'px';
+                    document.body.appendChild(celebration);
+                    
+                    setTimeout(() => {
+                        celebration.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        function showCommands() {
+            const commandsDiv = document.getElementById('commands');
+            if (commandsDiv.style.display === 'none') {
+                commandsDiv.style.display = 'block';
+            } else {
+                commandsDiv.style.display = 'none';
+            }
+        }
+
+        // Celebración automática al cargar
+        window.addEventListener('load', () => {
+            setTimeout(() => celebrate('🎉'), 500);
+        });
+    </script>
+</body>
+</html>
